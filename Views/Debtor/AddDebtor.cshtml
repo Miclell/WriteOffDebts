@@ -1,0 +1,31 @@
+﻿@model WriteOffDebts.Models.AddDebtorModel
+
+<form asp-action="AddDebtor" method="post">
+    <div class="form-group">
+        <label asp-for="FullName" class="control-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DebtAmount" class="control-label"></label>
+        <input asp-for="DebtAmount" class="form-control" />
+        <span asp-validation-for="DebtAmount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InterestRate" class="control-label"></label>
+        <input asp-for="InterestRate" class="form-control" />
+        <span asp-validation-for="InterestRate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DebtDate" class="control-label"></label>
+        <input asp-for="DebtDate" type="date" class="form-control" />
+        <span asp-validation-for="DebtDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PhotoPath" class="control-label"></label>
+        <input asp-for="PhotoPath" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" />
+    </div>
+</form>

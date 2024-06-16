@@ -1,0 +1,70 @@
+﻿@model WriteOffDebts.Models.DebtorModel
+
+<p class="text" style="text-align: center">Список должников</p>
+
+<br>
+
+<form asp-action="GoToPay" method="post">
+    <div class="container">
+        <div class="arrow" id="prev">
+            &lt;
+        </div>
+        <img class="image" src="https://via.placeholder.com/200" alt="Изображение">
+        <div class="text-debtor-container">
+            <div class="name">Имя</div>
+            <div class="debt">Долг</div>
+            <div class="rate">Процентная ставка</div>
+            <div class="date">Дата взятия</div>
+        </div>
+        <div class="arrow" id="next">
+            &gt;
+        </div>
+    </div>
+
+    <input type="hidden" name="debtorId" id="debtorId" value="" />
+    <button type="submit" class="btn btn-add-debtor">Оплатить</button>
+</form>
+
+<script>
+    let currentIndex = 0;
+    let data = [];
+
+    const loadData = async () => {
+        const response = await fetch('/api/debtorapi/all');
+        data = await response.json();
+        updateForm();
+    };
+
+    function updateForm() {
+        const debtor = data[currentIndex];
+        document.querySelector("#debtorId").value = debtor.id;
+        const image = document.querySelector(".image");
+        const name = document.querySelector(".name");
+        const debt = document.querySelector(".debt");
+        const rate = document.querySelector(".rate");
+        const date = document.querySelector(".date");
+
+        const initialAmount = debtor.debtAmount;
+        const interestRate = debtor.interestRate / 100;
+        const numDays = Math.floor((new Date() - new Date(debtor.debtDate)) / (1000 * 60 * 60 * 24));
+        const totalAmount = initialAmount * (1 + interestRate) ** numDays;
+
+        image.src = debtor.photoPath || "https://via.placeholder.com/200";
+        name.textContent = debtor.fullName;
+        debt.textContent = `Должен: ${totalAmount} рублей`;
+        rate.textContent = `Процентная ставка: ${debtor.interestRate}%`;
+        date.textContent = `Дата взятия: ${debtor.debtDate.slice(0, 10)}`;
+    }
+
+    document.querySelector("#prev").addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + data.length) % data.length;
+        updateForm();
+    });
+
+    document.querySelector("#next").addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % data.length;
+        updateForm();
+    });
+
+    loadData();
+</script>

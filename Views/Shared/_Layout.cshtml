@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Должники.рф</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <span class="logo">Должники.рф</span>
+        <nav>
+            <a asp-controller="Home" asp-action="Index">Главная</a>
+            <a asp-controller="Debtor" asp-action="Debtors">Должники</a>
+            <a asp-controller="User" asp-action="Personal">Личный кабинет</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="User" asp-action="Logout">Выйти</a>
+            }
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+            &copy; 2024 - PLK.INVEST
+    </footer>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

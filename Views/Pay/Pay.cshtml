@@ -1,0 +1,21 @@
+﻿@model WriteOffDebts.Models.PayModel
+
+<form id="payment-form" asp-action="Pay" method="post">
+    <div class="payment-form-container">
+        <div class="payment-card">
+            <form asp-action="Pay" method="post">
+                <div class="form-group">
+                    <input asp-for="CardNumber" type="text" id="cardNumber" name="cardNumber" class="form-control" placeholder="Номер карты" required pattern="\d{16}" />
+                </div>
+                <div class="form-group inline-group">
+                    <input asp-for="Validity" type="text" id="expiryDate" name="expiryDate" class="form-control half-width" placeholder="MM/YY" required pattern="\d{2}/\d{2}" />
+                    <input asp-for="CVV" type="text" id="cvv" name="cvv" class="form-control half-width" placeholder="CVV" required pattern="\d{3}" />
+                </div>
+                <div class="form-group inline-group">
+                    <div class="payment-provider">PLK.PAY</div>
+                    <button type="submit" class="btn">Оплатить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</form>

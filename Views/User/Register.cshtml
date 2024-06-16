@@ -1,0 +1,46 @@
+﻿@model WriteOffDebts.Models.RegisterModel
+
+<form asp-action="Register" method="post" class="register-form">
+    <div class="form-group">
+        <label asp-for="UserName" class="label-register"></label>
+        <br>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <br>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <label asp-for="ConfirmPassword"></label>
+        <br>
+        <input asp-for="ConfirmPassword" class="form-control" />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-register">Зарегистрироваться</button>
+</form>
+
+@section scripts{
+ 
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('input[name="UserName"]').on('blur', function () {
+                var userName = $(this).val();
+                $.post('C:/Users/hem12/source/repos/WriteOffDebts/Controllers/UserController/CheckUserName', { userName: userName }, function (data) {
+                    if (data === false) {
+                        alert("Такой пользователь уже существует!");
+                    } else {
+                        alert("Имя пользователя доступно.");
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,63 @@
+﻿@model WriteOffDebts.Models.UserModel
+
+<p class="text" style="text-align: center">Список ваших должников</p>
+
+<br>
+
+<div class="container">
+    <div class="arrow" id="prev">
+        &lt;
+    </div>
+    <img class="image" src="https://via.placeholder.com/200" alt="Изображение">
+    <div class="text-debtor-container">
+        <div class="name">Имя</div>
+        <div class="debt">Долг</div>
+        <div class="rate">Процентная ставка</div>
+        <div class="date">Дата взятия</div>
+    </div>
+    <div class="arrow" id="next">
+        &gt;
+    </div>
+</div>
+
+<form asp-controller="Debtor" asp-action="AddDebtor">
+    <button type="submit" class="btn btn-add-debtor">Добавить должника</button>
+</form>
+
+<script>
+    let currentIndex = 0;
+    let data = [];
+
+    const loadData = async () => {
+        const response = await fetch('/api/debtorapi');
+        data = await response.json();
+        updateForm();
+    };
+
+    function updateForm() {
+        const debtor = data[currentIndex];
+        const image = document.querySelector(".image");
+        const name = document.querySelector(".name");
+        const debt = document.querySelector(".debt");
+        const rate = document.querySelector(".rate");
+        const date = document.querySelector(".date");
+
+        image.src = debtor.photoPath || "https://via.placeholder.com/200";
+        name.textContent = debtor.fullName;
+        debt.textContent = `Должен: ${debtor.debtAmount} рублей`;
+        rate.textContent = `Процентная ставка: ${debtor.interestRate}%`;
+        date.textContent = `Дата взятия: ${debtor.debtDate.slice(0, 10)}`;
+    }
+
+    document.querySelector("#prev").addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + data.length) % data.length;
+        updateForm();
+    });
+
+    document.querySelector("#next").addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % data.length;
+        updateForm();
+    });
+
+    loadData();
+</script>
